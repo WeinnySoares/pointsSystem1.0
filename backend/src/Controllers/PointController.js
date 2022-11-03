@@ -1,4 +1,4 @@
-//const queries = require('../query');
+const moment = require('moment');
 const Point = require('../Models/point');
 
 class PointController{
@@ -18,6 +18,7 @@ class PointController{
     async create(req,res){
         try{
             const {user_id} = req.body;
+            const date = moment().format('DD/M/YYYY');
 
             const period = {
               0 : 'start',
@@ -26,7 +27,7 @@ class PointController{
               3 : 'end'
             };
 
-            let current = Object.keys(await Point.find({user_id})).length;
+            let current = Object.keys(await Point.find({user_id, date})).length;
 
             if(current > 3){
               res.send(200, {response: {} , menssage:'Registro do dia já preenchido.'})
@@ -43,9 +44,10 @@ class PointController{
 
     async alter(req,res){
         try {
-            const {id, date} = req.params;
+            const {id}   = req.params;
+            const {date} = req.body;
 
-            const response = await Point.update({user_id:id, date});
+            const response = await Point.update({id, date});
 
             res.send(200,{response, menssage: 'Ponto aterado com sucesso !'});
         } catch (error) {
@@ -56,8 +58,9 @@ class PointController{
     async delete(req,res){
         try {
             const {id} = req.params;
+            const {user_id,date} = req.query;
 
-            const response = await Point.delete({user_id:id});
+            const response = await Point.delete({id,user_id,date});
             
             res.send(200,{response, menssage: 'Ponto removido com sucesso !'});
         } catch (error) {
