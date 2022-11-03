@@ -6,7 +6,7 @@ Sistema para registro de ponto online.
 teconologias usadas:
 
 - Backend:
-    - Nodejs 18.07.0
+    - Nodejs 14.20.1
     - Restify
 
 - Database:
